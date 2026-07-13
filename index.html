@@ -1,259 +1,670 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<style>
-.btn{ padding:5px; background-color:white ; margin-left:auto; margin-right:auto; display:block; border :none; cursor: pointer; color:black; font-size:100%; line-height:30px; font-family:Fantasy; padding:5px; } a.sec{ text-decoration:none; color:black; font-size:120%; border:3px solid black; line-height:150%; font-family:Fantasy; border-radius: 5px; padding:5px; text-align:left; display:block; } a.sec:hover{ color:#FFF000; background-color:#3562A6; } img{ width:100%; height:10rem; display:block; margin-left:auto; margin-right:auto; } @media screen and (orientation: portrait) { * { box-sizing: border-box; } .column { float: left; width:50%; padding:8px; margin-left:auto; margin-right:auto; display:block; } .row::after { content: ""; clear: both; display: table; } } @media screen and (orientation: landscape) { * { box-sizing: border-box; } .column { float: left; width:25%; padding:8px; margin-left:auto; margin-right:auto; display:block; } .row::after { content: ""; clear: both; display: table; } }    
-</style>
-</head>
-<body style="background-color:black">
-
-
-
-<div class="container">
-
-<br><b><p style="font-size:120%;font-family:Fantasy;line-height:50px;color:#006391;background-color:#FFFFFF;text-align:center">Date - 15.9.2024/15.9.2024</p>
-
-  
-<div class="row">
-<div class="column">  
-<b><button type="button"class="btn btn-info btn-lg"style="color:black" data-toggle="modal"data-target="#myModal"><b><img src ="https://i.imgur.com/TxRUiWH.jpeg">Tottenham  
-Vs Arsenal <br>7:30PM</button>
-</div>
-
-<div class="column">  
-<b><button type="button"class="btn btn-info btn-lg"style="color:black" data-toggle="modal"data-target="#myModal1"><b><img src ="https://i.imgur.com/ah7DAoY.jpeg">Wolves
-Vs Newcastle <br>10:00PM </button>
-</div>
-
-
-
-  <!-- For 0 -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-  <!-- Modal content-->
-      <div class="modal-content">
-      <div class="modal-header">
-         <button type="button" class="close" data-dismiss="modal">×</button>
-          <h4 class="modal-title">စပါး
-vs အာဆင်နယ် </h4></div>
-      <div class="modal-body"> 
-
-              <br><a class="sec" href="intent://bayder44.github.io/Bayder44/ictv.sport6.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 IC_TV Premium Server </a>      
-                           
-             <br><a class="sec" href="intent://pull.niues.live/live/stream-9912060_lsd.m3u8?auth_key=1725380902-0-0-889839228909def54013f6120daab700#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 1SD </a> 
-                                        
-            
-            <br><a class="sec" href="intent://pull.niues.live/live/stream-9912060_lhd.m3u8?auth_key=1725380902-0-0-889839228909def54013f6120daab700#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 2HD </a>                                
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IC_TV Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --admin-color: #6200ea; --primary-color: #e50914; --bg-color: #111; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        body { background-color: #ddd; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+        .phone-container { width: 100%; max-width: 412px; height: 100vh; max-height: 800px; background: #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.3); position: relative; overflow: hidden; display: flex; flex-direction: column; }
         
-       
-           <br><a class="sec" href="intent://bayder44.github.io/bayder44.gitgub.io/ifram.html#Intent;;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 35HFHD </a> 
-                       
+        header { background: var(--admin-color); color: white; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 10; }
+        .header-title { font-family: 'Righteous', cursive; font-size: 18px; letter-spacing: 1px; }
+        .menu-btn { font-size: 20px; cursor: pointer; }
 
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; }
+        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #fff; z-index: 101; transition: 0.3s; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
+        .sidebar.active { left: 0; }
+        .sidebar-header { background: var(--admin-color); color: white; padding: 25px 20px; font-family: 'Righteous', cursive; font-size: 20px; }
+        .menu-item { padding: 15px 20px; font-size: 14px; font-weight: bold; color: #333; border-bottom: 1px solid #eee; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        .menu-item:hover { background: #f4f4f9; color: var(--admin-color); }
 
-        <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 4SD </a>
-   
-    </div></div></div></div>
-    
-       
- <!-- For 1 -->
-  <div class="modal fade" id="myModal1" role="dialog">
-   <div class="modal-dialog">
- <!-- Modal content-->
-   <div class="modal-content">      
-   <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h4 class="modal-title">Wolves
-vs Newcastle </h4></div>
-    <div class="modal-body">
+        .scrollable-content { flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa; }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
 
-      
-         
-<br><a class="sec" href="intent://bayder44.github.io/Bayder44/ictv.sport6.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 1HD </a>
+        .admin-box { background: #fff; padding: 15px; border-radius: 12px; border-left: 5px solid var(--admin-color); margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .admin-box.banner-box { border-left-color: #ff00ff; }
+        .box-title { font-weight: bold; font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; color: #333; }
+        input, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; outline: none; background: #f9f9f9; }
+        input:focus, select:focus { border-color: var(--admin-color); background: #fff; }
+        
+        .input-row { display: flex; gap: 10px; }
+        .input-row input { flex: 1; }
 
-      
-              <br><a class="sec"href="intent://pull.niues.live/live/stream-9912060_lsd.m3u8?auth_key=1725380902-0-0-889839228909def54013f6120daab700#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 2SD </a> 
-                              
-          <br><a class="sec"href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 3SD </a> 
-                     
-                <br><a class="sec" href="intent://pull.niues.live/live/stream-9912060_lhd.m3u8?auth_key=1725380902-0-0-889839228909def54013f6120daab700#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 4SD </a>
+        .sub-btn { width: 100%; padding: 12px; border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; background: var(--admin-color); font-size: 13px; transition: 0.2s; margin-bottom: 5px; }
+        .sub-btn:active { transform: scale(0.98); }
 
-   
-    </div></div></div></div>
+        .manage-section { background: #fff; padding: 15px; border-radius: 10px; margin-top: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .manage-title { font-size: 13px; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; margin-bottom: 10px; color: #444; }
+        .item-list { max-height: 250px; overflow-y: auto; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f9f9f9; margin-bottom: 5px; border-radius: 6px; font-size: 12px; border: 1px solid #eee; }
+        .item span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 60%; font-weight: bold; color: #333; }
+        .btn-group { display: flex; gap: 5px; }
+        .edit-btn { background: #f39c12; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .del-btn { background: #e50914; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        
+        .user-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fff; margin-bottom: 8px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .active-user-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px; background: #fff; margin-bottom: 8px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 13px; font-weight: bold; color: #333; }
+        
+        .action-selector { background: #e9ecef; padding: 8px; border-radius: 6px; margin-bottom: 12px; font-weight: bold; font-size: 12px; border: 1px solid #ccc; color: #444; }
+    </style>
+</head>
+<body>
 
+<div class="phone-container">
+    <header>
+        <i class="fa-solid fa-bars menu-btn" onclick="toggleMenu(true)"></i>
+        <div class="header-title" id="mainHeaderTitle">DASHBOARD</div>
+        <div style="width: 20px;"></div>
+    </header>
 
-   
- <!-- For 2 -->
-  <div class="modal fade" id="myModal2" role="dialog">
-   <div class="modal-dialog">
- <!-- Modal content-->
-   <div class="modal-content">      
-   <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h4 class="modal-title"> မန်စီးတီး   
-vs ဘရန့်ဖို့ဒ် </h4></div>
-    <div class="modal-body">
-          
-  
-  <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 IC_TV Premium Server </a>
-  
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMenu(false)"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">IC TV ADMIN</div>
+        <div class="menu-item" onclick="switchView('dashboard')"><i class="fa-solid fa-cloud-arrow-up" style="color:#6200ea;"></i> Content တင်ရန်</div>
+        <div class="menu-item" onclick="switchView('userList')"><i class="fa-solid fa-users" style="color:#3b82f6;"></i> User List (အကောင့်များ)</div>
+        <div class="menu-item" onclick="switchView('activeNow')"><i class="fa-solid fa-circle-dot fa-fade" style="color:#22c55e;"></i> Active Now (လက်ရှိသုံးနေသူ)</div>
+    </div>
+
+    <div class="scrollable-content">
+        <div id="view-dashboard" class="view-section active">
+            <div class="admin-box banner-box">
+                <div class="box-title" style="color:#ff00ff;"><i class="fa-solid fa-images"></i> ၁။ Banner Slider ပုံတင်ရန်</div>
+                <input type="text" id="bTitle" placeholder="Banner ခေါင်းစဉ် (Title)">
+                <input type="text" id="bImage" placeholder="Banner ဓာတ်ပုံလင့်ခ် (URL)">
+                <button class="sub-btn" style="background:#ff00ff;" id="btn-banners" onclick="uploadBanner()">Banner တင်မည်</button>
+            </div>
             
-            <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 1HD </a> 
-                              
+            <div class="admin-box" style="border-left-color: #00d2ff;">
+                <div class="box-title" style="color:#00d2ff;"><i class="fa-solid fa-film"></i> ၂။ ဗီဒီယို/ရုပ်ရှင် တင်ရန်</div>
+                <select id="mCategory">
+                    <option value="movies">Movies (ရုပ်ရှင်ပုံမှန်)</option>
+                    <option value="animation">Animation (အန်နီမေးရှင်း)</option>
+                    <option value="adult">18+ Premium (သီးသန့်)</option>
+                </select>
+                <input type="text" id="mTitle" placeholder="ခေါင်းစဉ်/အမည်">
+                <div class="input-row">
+                    <input type="text" id="mYear" placeholder="ခုနှစ် (ဥပမာ - 2026)">
+                    <input type="text" id="mRating" placeholder="Rating (ဥပမာ - 7.8)">
+                </div>
+                <input type="text" id="mImage" placeholder="ပိုစတာပုံလင့်ခ် (URL)">
+                <input type="text" id="mStream" placeholder="Streaming ဗီဒီယိုလင့်ခ် (.mp4, .m3u8)">
+                <button class="sub-btn" style="background:#00d2ff;" id="btn-movies" onclick="uploadMovie()">ဗီဒီယိုတင်မည်</button>
+            </div>
             
-             <br><a class="sec"href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 2SD </a> 
-                               
-             
-                <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 3HD </a>                              
-                      
-
-     
-      
-    </div></div></div></div>
-    
-    
-    
- <!-- For 3 -->
-  <div class="modal fade" id="myModal3" role="dialog">
-   <div class="modal-dialog">
- <!-- Modal content-->
-   <div class="modal-content">      
-   <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h4 class="modal-title">အက်စတွန်ဗီလာ
-vs အဲဗာတန်   </h4></div>
-    <div class="modal-body">
-          
+            <div class="admin-box" style="border-left-color: #ff9f43;">
+                <div class="box-title" style="color:#ff9f43;"><i class="fa-solid fa-tv"></i> ၃။ ဇာတ်လမ်းတွဲ (Series) တင်ရန်</div>
+                <select id="sActionType" class="action-selector" onchange="toggleSeriesAction()">
+                    <option value="new">🆕 ဇာတ်လမ်းတွဲအသစ် တင်မည်</option>
+                    <option value="existing">➕ ရှိပြီးသားစီးရီးကို အပိုင်းသစ် (Episode) ထပ်ထည့်မည်</option>
+                </select>
+                
+                <div id="sNewFields">
+                    <input type="text" id="sTitle" placeholder="စီးရီးခေါင်းစဉ်">
+                    <div class="input-row">
+                        <input type="text" id="sYear" placeholder="ခုနှစ် (ဥပမာ - 2026)">
+                        <input type="text" id="sRating" placeholder="Rating (ဥပမာ - 7.8)">
+                    </div>
+                    <input type="text" id="sImage" placeholder="ပိုစတာပုံလင့်ခ် (URL)">
+                    <input type="text" id="sEpisodesEdit" placeholder="EP 1,,လင့်ခ် | EP 2,,လင့်ခ် (ပြင်ရန်)" style="display:none; border:2px solid #ff9f43; font-weight:bold;">
+                </div>
+                
+                <div id="sExistingFields" style="display:none;">
+                    <select id="sExistingSelect"><option value="">Loading Series...</option></select>
+                </div>
+                
+                <div id="sSingleAddBlock" style="background:#f4f4f4; padding:10px; border-radius:6px; margin-bottom:10px;">
+                    <p style="font-size:11px; font-weight:bold; margin-bottom:6px; color:#555;">ပိုင်းစဉ် အချက်အလက် (Episode Details)</p>
+                    <input type="text" id="sEpName" placeholder="အပိုင်းအမည် (ဥပမာ - EP 01)">
+                    <input type="text" id="sEpLink" placeholder="ဗီဒီယိုလင့်ခ် (.mp4, .m3u8)">
+                </div>
+                <button class="sub-btn" style="background:#ff9f43;" id="btn-series" onclick="uploadSeries()">စီးရီး / အပိုင်းသစ် တင်မည်</button>
+            </div>
             
-            <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 1HD </a>
-            
-             
-                               
-             
-                <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 1SD </a>
-                                
-
-                 
+            <div class="admin-box" style="border-left-color: #10ac84;">
+                <div class="box-title" style="color:#10ac84;"><i class="fa-solid fa-ranking-star"></i> ၄။ Football Live တင်ရန်</div>
+                <select id="fActionType" class="action-selector" onchange="toggleFootballAction()">
+                    <option value="new">🆕 ပွဲစဉ်အသစ် တင်မည်</option>
+                    <option value="existing">➕ ရှိပြီးသားပွဲကို Server အသစ် ထပ်ထည့်မည်</option>
+                </select>
+                
+                <div id="fNewFields">
+                    <input type="text" id="fTeams" placeholder="အသင်းအမည် (ဥပမာ - Man Utd Vs Liverpool)">
                     
+                    <div class="input-row">
+                        <input type="date" id="fDate" title="ရက်စွဲရွေးချယ်ပါ">
+                        <input type="text" id="fTime" placeholder="အချိန် (ဥပမာ - 09:30 PM)">
+                    </div>
 
-                                        
-    </div></div></div></div>   
-    
-    
-   
-   
-    
- <!-- For 4 -->
-  <div class="modal fade" id="myModal4" role="dialog">
-   <div class="modal-dialog">
- <!-- Modal content-->
-   <div class="modal-content">      
-   <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h4 class="modal-title"> ဘုန်းမောက်
-vs ချက်ဆီးလ်  </h4></div>
-    <div class="modal-body">
-          
+                    <input type="text" id="fImage" placeholder="နောက်ခံပုံလင့်ခ် (URL)">
+                    <select id="fStatus"><option value="live">Live</option><option value="upcoming">Upcoming</option></select>
+                    <input type="text" id="fServersEdit" placeholder="Server 1,,လင့်ခ် | Server 2,,လင့်ခ် (ပြင်ရန်)" style="display:none; border:2px solid #10ac84; font-weight:bold;">
+                </div>
+                
+                <div id="fExistingFields" style="display:none;">
+                    <select id="fExistingSelect"><option value="">Loading Matches...</option></select>
+                </div>
+
+                <div id="fSingleAddBlock" style="background:#f4f4f4; padding:10px; border-radius:6px; margin-bottom:10px;">
+                    <p style="font-size:11px; font-weight:bold; margin-bottom:6px; color:#555;">ဆာဗာ အချက်အလက် (Server Details)</p>
+                    <input type="text" id="fServerName" placeholder="ဆာဗာအမည် (ဥပမာ - Server 1)">
+                    <input type="text" id="fServerLink" placeholder="Stream URL (m3u8 လင့်ခ်)">
+                </div>
+                <button class="sub-btn" style="background:#10ac84;" id="btn-football" onclick="uploadFootball()">ဘောလုံးပွဲ / Server အသစ် တင်မည်</button>
+            </div>
             
-            <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 1HD </a>
-                              
+            <div class="admin-box" style="border-left-color: #f1c40f;">
+                <div class="box-title" style="color:#f1c40f;"><i class="fa-solid fa-star"></i> ၅။ Highlight တင်ရန်</div>
+                <input type="text" id="hlTitle" placeholder="ပွဲစဉ်အမည် (CHE vs ARS)">
+                <input type="text" id="hlLeague" placeholder="League (Premier League)">
+                <input type="text" id="hlStream" placeholder="Video URL">
+                <input type="text" id="hlImage" placeholder="Poster URL">
+                <button class="sub-btn" style="background:#f1c40f; color:#000;" onclick="uploadHighlight()">Highlight တင်မည်</button>
+            </div>
+
+            <div class="manage-section"><div class="manage-title">Banners စီမံရန်</div><div class="item-list" id="adminBannerList"></div></div>
+            <div class="manage-section"><div class="manage-title">Movies စီမံရန်</div><div class="item-list" id="adminMovieList"></div></div>
+            <div class="manage-section"><div class="manage-title">Animation စီမံရန်</div><div class="item-list" id="adminAnimationList"></div></div>
+            <div class="manage-section"><div class="manage-title">18+ Premium စီမံရန်</div><div class="item-list" id="adminAdultList"></div></div>
+            <div class="manage-section"><div class="manage-title">Series (ဇာတ်လမ်းတွဲ) စီမံရန်</div><div class="item-list" id="adminSeriesList"></div></div>
+            <div class="manage-section"><div class="manage-title">Football Live စီမံရန်</div><div class="item-list" id="adminFootballList"></div></div>
+            <div class="manage-section"><div class="manage-title">Highlights ဖျက်ရန်</div><div class="item-list" id="adminHighlightList"></div></div>
+        </div>
+
+        <div id="view-userList" class="view-section">
+            <div class="admin-box" style="border-left-color: #3b82f6; background: transparent; border: none; padding: 0; box-shadow: none;">
+                <p style="font-size: 14px; margin-bottom: 15px; color: #475569; font-weight: bold; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <i class="fa-solid fa-users" style="color:#3b82f6;"></i> စုစုပေါင်း အကောင့်: <span id="totalUsers" style="color: #e50914; font-size: 18px;">0</span>
+                </p>
+                <div class="item-list" id="userListContainer" style="max-height: 600px;"></div>
+            </div>
+        </div>
+
+        <div id="view-activeNow" class="view-section">
+            <div class="admin-box" style="border-left-color: #22c55e; background: transparent; border: none; padding: 0; box-shadow: none;">
+                <p style="font-size: 14px; margin-bottom: 15px; color: #475569; font-weight: bold; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <i class="fa-solid fa-signal fa-fade" style="color:#22c55e;"></i> လက်ရှိ အသုံးပြုနေသူ: <span id="totalActiveUsers" style="color: #22c55e; font-size: 18px;">0</span>
+                </p>
+                <div class="item-list" id="activeNowContainer" style="max-height: 600px;"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, remove, update, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCfzDnLOvb6uLdhoLHYk0ECYfgqJVZb9EI",
+        authDomain: "ictvnewversion.firebaseapp.com",
+        projectId: "ictvnewversion",
+        storageBucket: "ictvnewversion.firebasestorage.app",
+        messagingSenderId: "135972283847",
+        appId: "1:135972283847:web:456e1d5e12c7b03eb2e5e2",
+        measurementId: "G-YV34FWGXWW",
+        databaseURL: "https://ictvnewversion-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let allUsersData = {}; 
+
+    // --- Password Verification Helper Function ---
+    function checkAdminPassword() {
+        if (sessionStorage.getItem("admin_authenticated") === "true") {
+            return true;
+        }
+        let pwd = prompt("လုပ်ဆောင်ချက်ကို အတည်ပြုရန် စကားဝှက်ထည့်ပါ:");
+        if (pwd === "29581") {
+            sessionStorage.setItem("admin_authenticated", "true");
+            return true;
+        } else if (pwd !== null) {
+            alert("စကားဝှက် မှားယွင်းနေပါသည်။");
+        }
+        return false;
+    }
+
+    // --- UI Toggles ---
+    window.toggleMenu = (show) => {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if(show) { sidebar.classList.add('active'); overlay.style.display = 'block'; } 
+        else { sidebar.classList.remove('active'); overlay.style.display = 'none'; }
+    };
+
+    window.switchView = (viewName) => {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(`view-${viewName}`).classList.add('active');
+        toggleMenu(false);
+        let title = "DASHBOARD";
+        if(viewName === 'userList') title = "USER LIST";
+        if(viewName === 'activeNow') title = "ACTIVE NOW";
+        document.getElementById('mainHeaderTitle').innerText = title;
+    };
+
+    window.toggleSeriesAction = () => {
+        const type = document.getElementById('sActionType').value;
+        document.getElementById('sNewFields').style.display = type === 'new' ? 'block' : 'none';
+        document.getElementById('sExistingFields').style.display = type === 'existing' ? 'block' : 'none';
+    };
+
+    window.toggleFootballAction = () => {
+        const type = document.getElementById('fActionType').value;
+        document.getElementById('fNewFields').style.display = type === 'new' ? 'block' : 'none';
+        document.getElementById('fExistingFields').style.display = type === 'existing' ? 'block' : 'none';
+    };
+
+    // --- User Management ---
+    onValue(ref(db, 'users'), (snapshot) => {
+        allUsersData = snapshot.val() || {}; 
+        const container = document.getElementById('userListContainer');
+        const total = document.getElementById('totalUsers');
+        
+        let count = 0;
+        let htmlStr = ""; 
+        
+        Object.keys(allUsersData).forEach(uKey => {
+            count++;
+            const uData = allUsersData[uKey];
+            const isBlocked = uData.status === 'blocked';
+            const btnColor = isBlocked ? '#22c55e' : '#e50914';
+            const btnText = isBlocked ? 'Unblock' : 'Block';
+            const statusText = isBlocked ? '<span style="color:#e50914">Blocked</span>' : '<span style="color:#22c55e">Active</span>';
             
-             <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 2SD </a>
-                               
-             
-                <br><a class="sec" href="intent://media1.mycinema.asia/media/films/Godzilla.X.Kong.The.New.Empire.2024.360p/Godzilla.X.Kong.The.New.Empire.2024.360p.m3u8#Intent;package=com.genuine.leone;action=android.intent.action.VIEW;scheme=http;type=video/mp4;end">👑 Server 3HD </a>
-                                
+            htmlStr += `
+                <div class="user-item">
+                    <div style="display:flex; align-items:center; gap:12px; width:65%;">
+                        <img src="${uData.photo || 'https://via.placeholder.com/40'}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border: 2px solid #e2e8f0;">
+                        <div style="overflow:hidden; white-space:nowrap;">
+                            <strong style="font-size: 14px; color: #1e293b;">${uData.username}</strong><br>
+                            <span style="font-size:11px; color: #64748b;">${statusText} | Pass: ${uData.password}</span>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:5px;">
+                        <button onclick="toggleBlock('${uKey}', '${uData.status}')" style="background:${btnColor}; color:white; border:none; padding:8px 10px; border-radius:6px; font-size:11px; cursor:pointer; font-weight:bold;">${btnText}</button>
+                        <button onclick="deleteUserAccount('${uKey}')" style="background:#475569; color:white; border:none; padding:8px 10px; border-radius:6px; font-size:11px; cursor:pointer; font-weight:bold;" title="အပြီးဖျက်မည်"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>`;
+        });
+        
+        container.innerHTML = htmlStr;
+        total.innerText = count;
+    });
 
-                 
-                                        
-    </div></div></div></div>   
-    
-   
-   
-    
- <!-- For 5 -->
-  <div class="modal fade" id="myModal5" role="dialog">
-   <div class="modal-dialog">
- <!-- Modal content-->
-   <div class="modal-content">      
-   <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h4 class="modal-title">Newcastle  
-vs Aston Villa  </h4></div>
-    <div class="modal-body">
-          
+    window.toggleBlock = function(uKey, status) {
+        const newStatus = status === 'active' ? 'blocked' : 'active';
+        if(confirm(`ဒီအကောင့်ကို ${newStatus} လုပ်မှာ သေချာပါသလား?`)) {
+            let pwd = prompt("လုပ်ဆောင်ချက်ကို အတည်ပြုရန် စကားဝှက်ထည့်ပါ:");
+            if (pwd === "29581") {
+                update(ref(db, `users/${uKey}`), { status: newStatus });
+            } else if (pwd !== null) {
+                alert("စကားဝှက် မှားယွင်းနေပါသည်။");
+            }
+        }
+    };
+
+    window.deleteUserAccount = function(uKey) {
+        if(confirm(`ဒီအကောင့်ကို အပြီးအပိုင်ဖျက်မှာ သေချာပါသလား? (ဖျက်ပြီးပါက ပြန်ယူ၍မရပါ)`)) { 
+            let pwd = prompt("လုပ်ဆောင်ချက်ကို အတည်ပြုရန် စကားဝှက်ထည့်ပါ:");
+            if (pwd === "29581") {
+                remove(ref(db, `users/${uKey}`)); 
+                remove(ref(db, `online_users/${uKey}`)); 
+            } else if (pwd !== null) {
+                alert("စကားဝှက် မှားယွင်းနေပါသည်။");
+            }
+        }
+    };
+
+    onValue(ref(db, 'online_users'), (snapshot) => {
+        const onlineUsers = snapshot.val();
+        const container = document.getElementById('activeNowContainer');
+        const total = document.getElementById('totalActiveUsers');
+        
+        let count = 0;
+        let htmlStr = "";
+        
+        if(onlineUsers) {
+            Object.keys(onlineUsers).forEach(uKey => {
+                if(onlineUsers[uKey] === true) {
+                    count++;
+                    const uData = allUsersData[uKey] || { username: uKey, photo: 'https://via.placeholder.com/40' };
+                    htmlStr += `
+                        <div class="active-user-item">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <img src="${uData.photo}" style="width:35px; height:35px; border-radius:50%; object-fit:cover; border: 2px solid #22c55e;">
+                                <span style="font-size: 14px; font-weight: bold;">${uData.username}</span>
+                            </div>
+                            <span style="font-size: 11px; color: #fff; background: #22c55e; padding: 4px 8px; border-radius: 20px;"><i class="fa-solid fa-circle" style="font-size:8px;"></i> Online</span>
+                        </div>`;
+                }
+            });
+        }
+        container.innerHTML = htmlStr;
+        total.innerText = count;
+    });
+
+    // --- Content Management System ---
+    let currentKeys = { banners: null, movies: null, series: null, football: null };
+    let currentMovieEditingNode = null; 
+
+    function resetButton(type, originalText) {
+        currentKeys[type] = null;
+        if(type === 'movies') {
+            currentMovieEditingNode = null;
+            document.getElementById('mYear').value = ""; 
+            document.getElementById('mRating').value = "";
+        }
+        document.getElementById(`btn-${type}`).innerText = originalText;
+        if(document.getElementById('mCategory')) document.getElementById('mCategory').disabled = false; 
+        
+        if(type === 'series') {
+            document.getElementById('sEpisodesEdit').style.display = 'none';
+            document.getElementById('sActionType').style.display = 'block';
+            document.getElementById('sSingleAddBlock').style.display = 'block';
+            document.getElementById('sYear').value = "";
+            document.getElementById('sRating').value = "";
+        }
+        if(type === 'football') {
+            document.getElementById('fServersEdit').style.display = 'none';
+            document.getElementById('fActionType').style.display = 'block';
+            document.getElementById('fSingleAddBlock').style.display = 'block';
+            document.getElementById('fDate').value = "";
+        }
+    }
+
+    window.uploadBanner = function() {
+        const title = document.getElementById('bTitle').value.trim();
+        const image = document.getElementById('bImage').value.trim();
+        if(!image) return alert("ဓာတ်ပုံလင့်ခ် မဖြစ်မနေထည့်ပါ!");
+        const data = { title, image };
+        if(currentKeys.banners) { update(ref(db, 'banners/' + currentKeys.banners), data).then(() => { alert("ပြင်ဆင်ပြီးပါပြီ!"); resetButton('banners', 'Banner တင်မည်'); document.getElementById('bTitle').value=""; document.getElementById('bImage').value=""; }); } 
+        else { push(ref(db, 'banners'), data).then(() => { alert("တင်ပြီးပါပြီ!"); document.getElementById('bTitle').value=""; document.getElementById('bImage').value=""; }); }
+    }
+
+    window.uploadMovie = function() {
+        if (!checkAdminPassword()) return; // Added Password Control
+        
+        const category = document.getElementById('mCategory').value;
+        const title = document.getElementById('mTitle').value.trim();
+        const year = document.getElementById('mYear').value.trim();
+        const rating = document.getElementById('mRating').value.trim();
+        const image = document.getElementById('mImage').value.trim();
+        const stream = document.getElementById('mStream').value.trim();
+        if(!title || !image || !stream) return alert("အချက်အလက်အားလုံး ဖြည့်စွက်ပါ!");
+        
+        const data = { title, image, stream, year, rating };
+        
+        if(currentKeys.movies) {
+            update(ref(db, `${currentMovieEditingNode || category}/${currentKeys.movies}`), data).then(() => { 
+                alert("ပြင်ဆင်ပြီးပါပြီ!"); 
+                resetButton('movies', 'ဗီဒီယိုတင်မည်'); 
+                document.getElementById('mTitle').value=""; document.getElementById('mImage').value=""; document.getElementById('mStream').value=""; 
+            });
+        } else { 
+            push(ref(db, category), data).then(() => { 
+                alert("အသစ်တင်ပြီးပါပြီ!"); 
+                document.getElementById('mTitle').value=""; document.getElementById('mYear').value=""; document.getElementById('mRating').value=""; document.getElementById('mImage').value=""; document.getElementById('mStream').value=""; 
+            }); 
+        }
+    }
+
+    window.uploadSeries = function() {
+        if (!checkAdminPassword()) return; // Added Password Control
+
+        if(currentKeys.series) { 
+            const title = document.getElementById('sTitle').value.trim();
+            const year = document.getElementById('sYear').value.trim();
+            const rating = document.getElementById('sRating').value.trim();
+            const image = document.getElementById('sImage').value.trim();
+            const epsString = document.getElementById('sEpisodesEdit').value.trim(); 
             
-                               
-             
-                <br><a class="sec"href="intent://e53dc1c060e87be95abb5a524b1752f1.livehwc3.cn/pull06.scstream.net/live/stream-9911967_lhd.m3u8?edge_slice=true&user_session_id=ec5ce89b8135fb3d88aae36e85bfa1d1&sub_m3u8=true#Intent;action=android.intent.action.VIEW;scheme=https;type=video/mp4;end">👑 Server 1HD (MX Playerသုံးပါ)</a> 
-                                
+            let episodesObj = {};
+            if(epsString !== "") {
+                epsString.split('|').forEach((p, idx) => { 
+                    const d = p.split(',,'); 
+                    if(d[0] && d[1]) episodesObj[`ep_${idx}`] = { name: d[0].trim(), stream: d[1].trim() }; 
+                });
+            }
 
-     <br><a class="sec"href="intent://e53dc1c060e87be95abb5a524b1752f1.livehwc3.cn/pull06.scstream.net/live/stream-9911967_lsd.m3u8?edge_slice=true&user_session_id=ec5ce89b8135fb3d88aae36e85bfa1d1&sub_m3u8=true#Intent;action=android.intent.action.VIEW;scheme=https;type=video/mp4;end">👑 Server 2SD (MX Playerသုံးပါ)</a>            
-                    
+            update(ref(db, 'series/' + currentKeys.series), { title, year, rating, image, episodes: episodesObj }).then(() => { 
+                alert("စီးရီးအချက်အလက် နှင့် အပိုင်းအားလုံးကို ပြင်ဆင်ပြီးပါပြီ!"); 
+                resetButton('series', 'စီးရီး / အပိုင်းသစ် တင်မည်'); 
+                document.getElementById('sTitle').value = ""; document.getElementById('sImage').value = ""; document.getElementById('sEpisodesEdit').value = "";
+            });
+            return;
+        }
 
-                                        
-    </div></div></div></div>   
-    
-   
-  
-  
-  
-    
- <!-- For 6 -->
-  <div class="modal fade" id="myModal6" role="dialog">
-   <div class="modal-dialog">
- <!-- Modal content-->
-   <div class="modal-content">      
-   <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">×</button>
-          <h4 class="modal-title">ဘုန်းမောက်
-vs ဝက်ဟမ်း </h4></div>
-    <div class="modal-body">
-          
+        const actionType = document.getElementById('sActionType').value;
+        const epName = document.getElementById('sEpName').value.trim();
+        const epLink = document.getElementById('sEpLink').value.trim();
+        
+        if (actionType === 'existing') {
+            const seriesId = document.getElementById('sExistingSelect').value;
+            if(!seriesId) return alert("ကျေးဇူးပြု၍ စီးရီးတစ်ခုခုကို ရွေးချယ်ပါ!");
+            if(!epName || !epLink) return alert("အပိုင်းအမည်နှင့် လင့်ခ် ထည့်သွင်းပေးပါ!");
             
-                               
-             
-                <br><a class="sec"href="intent://e53dc1c060e87be95abb5a524b1752f1.livehwc3.cn/pull06.scstream.net/live/stream-991140_lhd.m3u8?edge_slice=true&user_session_id=ec5ce89b8135fb3d88aae36e85bfa1d1&sub_m3u8=true#Intent;action=android.intent.action.VIEW;scheme=https;type=video/mp4;end">👑 Server 1HD (MX Playerသုံးပါ)</a> 
-                                
-<br><a class="sec"href="intent://e53dc1c060e87be95abb5a524b1752f1.livehwc3.cn/pull06.scstream.net/live/stream-991140_lsd.m3u8?edge_slice=true&user_session_id=ec5ce89b8135fb3d88aae36e85bfa1d1&sub_m3u8=true#Intent;action=android.intent.action.VIEW;scheme=https;type=video/mp4;end">👑 Server 1HD (MX Playerသုံးပါ)</a> 
-                               
-                 
-                    
+            const newEpKey = `ep_${Date.now()}`; 
+            update(ref(db, `series/${seriesId}/episodes/${newEpKey}`), { name: epName, stream: epLink }).then(() => {
+                alert("အပိုင်းအသစ် အောင်မြင်စွာ ပေါင်းထည့်ပြီးပါပြီ!");
+                document.getElementById('sEpName').value = ""; document.getElementById('sEpLink').value = "";
+            });
+            return;
+        }
 
-                                        
-    </div></div></div></div>   
+        const title = document.getElementById('sTitle').value.trim();
+        const year = document.getElementById('sYear').value.trim();
+        const rating = document.getElementById('sRating').value.trim();
+        const image = document.getElementById('sImage').value.trim();
+        if(!title || !image) return alert("စီးရီးခေါင်းစဉ်နှင့် ပုံလင့်ခ် ထည့်ပါ!");
+        
+        let episodesObj = {};
+        if(epName && epLink) { episodesObj[`ep_${Date.now()}`] = { name: epName, stream: epLink }; }
+
+        push(ref(db, 'series'), { title, year, rating, image, episodes: episodesObj }).then(() => { 
+            alert("စီးရီးအသစ် တင်ပြီးပါပြီ!"); 
+            document.getElementById('sTitle').value = ""; document.getElementById('sYear').value = ""; document.getElementById('sRating').value = ""; document.getElementById('sImage').value = ""; document.getElementById('sEpName').value = ""; document.getElementById('sEpLink').value = "";
+        }); 
+    }
+
+    // Football
+    window.uploadFootball = function() {
+        const actionType = document.getElementById('fActionType').value;
+        const svName = document.getElementById('fServerName').value.trim();
+        const svLink = document.getElementById('fServerLink').value.trim();
+
+        if (actionType === 'existing') {
+            const matchId = document.getElementById('fExistingSelect').value;
+            if(!matchId) return alert("ကျေးဇူးပြု၍ ပွဲစဉ်တစ်ခုခုကို ရွေးချယ်ပါ!");
+            if(!svName || !svLink) return alert("Server အမည်နှင့် လင့်ခ် ထည့်သွင်းပေးပါ!");
+            
+            const newSvKey = `sv_${Date.now()}`; 
+            update(ref(db, `football/${matchId}/servers/${newSvKey}`), { name: svName, stream: svLink }).then(() => {
+                alert("Server အသစ် အောင်မြင်စွာ ပေါင်းထည့်ပြီးပါပြီ!");
+                document.getElementById('fServerName').value = ""; document.getElementById('fServerLink').value = "";
+            });
+            return;
+        }
+
+        if(currentKeys.football) { 
+            const teams = document.getElementById('fTeams').value.trim();
+            const fDate = document.getElementById('fDate').value;
+            const time = document.getElementById('fTime').value.trim();
+            const image = document.getElementById('fImage').value.trim();
+            const status = document.getElementById('fStatus').value;
+            const srvString = document.getElementById('fServersEdit').value.trim(); 
+            
+            let serversObj = {};
+            if(srvString !== "") {
+                srvString.split('|').forEach((p, idx) => { 
+                    const d = p.split(',,'); 
+                    if(d[0] && d[1]) serversObj[`sv_${idx}`] = { name: d[0].trim(), stream: d[1].trim() }; 
+                });
+            }
+
+            update(ref(db, 'football/' + currentKeys.football), { teams: teams, date: fDate, time: time, image: image, status: status, servers: serversObj }).then(() => { 
+                alert("ပွဲစဉ်အချက်အလက် နှင့် ဆာဗာအားလုံးကို ပြင်ဆင်ပြီးပါပြီ!"); 
+                resetButton('football', 'ဘောလုံးပွဲ / Server အသစ် တင်မည်'); 
+                document.getElementById('fTeams').value = ""; document.getElementById('fDate').value = ""; document.getElementById('fTime').value = ""; document.getElementById('fImage').value = ""; document.getElementById('fServersEdit').value = "";
+            });
+            return;
+        }
+
+        const teams = document.getElementById('fTeams').value.trim();
+        const fDate = document.getElementById('fDate').value;
+        const time = document.getElementById('fTime').value.trim();
+        const image = document.getElementById('fImage').value.trim();
+        const status = document.getElementById('fStatus').value;
+        if(!teams || !time || !image) return alert("ပွဲစဉ်အချက်အလက်များ အပြည့်အစုံထည့်ပါ!");
+
+        let serversObj = {};
+        if(svName && svLink) { serversObj[`sv_${Date.now()}`] = { name: svName, stream: svLink }; }
+
+        push(ref(db, 'football'), { teams, date: fDate, time, image, status, servers: serversObj }).then(() => { 
+            alert("ပွဲစဉ်အသစ် တင်ပြီးပါပြီ!"); 
+            document.getElementById('fTeams').value = ""; document.getElementById('fDate').value = ""; document.getElementById('fTime').value = ""; document.getElementById('fImage').value = ""; document.getElementById('fServerName').value = ""; document.getElementById('fServerLink').value = "";
+        }); 
+    }
+
+    window.uploadHighlight = function() {
+        const title = document.getElementById('hlTitle').value.trim();
+        const league = document.getElementById('hlLeague').value.trim();
+        const stream = document.getElementById('hlStream').value.trim();
+        const image = document.getElementById('hlImage').value.trim();
+        if(!title || !stream) return alert("အချက်အလက်ဖြည့်ပါ");
+        push(ref(db, 'highlights'), { title, league, stream, image, date: new Date().toLocaleDateString() }).then(() => {
+            alert("တင်ပြီးပါပြီ"); document.getElementById('hlTitle').value = ""; document.getElementById('hlStream').value = "";
+        });
+    }
+
+    window.startEdit = async function(type, key, optionalSubNode = null) {
+        if (type === 'movies' || type === 'series') {
+            if (!checkAdminPassword()) return; // Added Password Control for Editing
+        }
+
+        const dbPath = optionalSubNode ? `${optionalSubNode}/${key}` : `${type}/${key}`;
+        const snapshot = await get(ref(db, dbPath));
+        if (!snapshot.exists()) return;
+        const data = snapshot.val();
+        
+        if (type === 'movies') { 
+            currentKeys.movies = key; currentMovieEditingNode = optionalSubNode; 
+            document.getElementById('mCategory').value = optionalSubNode; document.getElementById('mCategory').disabled = true; 
+            
+            document.getElementById('mTitle').value = data.title || ''; 
+            document.getElementById('mYear').value = data.year || ''; 
+            document.getElementById('mRating').value = data.rating || ''; 
+            document.getElementById('mImage').value = data.image || ''; 
+            document.getElementById('mStream').value = data.stream || ''; 
+            
+            document.getElementById('btn-movies').innerText = "သိမ်းမည်"; 
+        } else if (type === 'banners') { 
+            currentKeys.banners = key; 
+            document.getElementById('bTitle').value = data.title || ''; document.getElementById('bImage').value = data.image || ''; 
+            document.getElementById('btn-banners').innerText = "သိမ်းမည်"; 
+        } else if (type === 'series') { 
+            currentKeys.series = key; 
+            document.getElementById('sActionType').value = "new"; toggleSeriesAction(); 
+            document.getElementById('sActionType').style.display = 'none'; 
+            document.getElementById('sSingleAddBlock').style.display = 'none'; 
+            
+            document.getElementById('sTitle').value = data.title || ''; 
+            document.getElementById('sYear').value = data.year || ''; 
+            document.getElementById('sRating').value = data.rating || ''; 
+            document.getElementById('sImage').value = data.image || ''; 
+            
+            const epInput = document.getElementById('sEpisodesEdit');
+            epInput.style.display = 'block'; 
+            epInput.value = data.episodes ? Object.values(data.episodes).map(e => `${e.name},,${e.stream}`).join(' | ') : '';
+            
+            document.getElementById('btn-series').innerText = "စီးရီးအချက်အလက်အားလုံးကို သိမ်းမည်"; 
+        } else if (type === 'football') { 
+            currentKeys.football = key; 
+            document.getElementById('fActionType').value = "new"; toggleFootballAction(); 
+            document.getElementById('fActionType').style.display = 'none'; 
+            document.getElementById('fSingleAddBlock').style.display = 'none'; 
+            
+            document.getElementById('fTeams').value = data.teams || ''; 
+            document.getElementById('fDate').value = data.date || ''; 
+            document.getElementById('fTime').value = data.time || ''; 
+            document.getElementById('fImage').value = data.image || ''; 
+            document.getElementById('fStatus').value = data.status || 'live'; 
+            
+            const svInput = document.getElementById('fServersEdit');
+            svInput.style.display = 'block'; 
+            svInput.value = data.servers ? Object.values(data.servers).map(s => `${s.name},,${s.stream}`).join(' | ') : '';
+            
+            document.getElementById('btn-football').innerText = "ပွဲစဉ်အချက်အလက်အားလုံးကို သိမ်းမည်"; 
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    onValue(ref(db, 'banners'), s => { 
+        const d=s.val(); const c=document.getElementById('adminBannerList'); let html = "";
+        if(d) Object.keys(d).forEach(k => { html += `<div class="item"><span>${d[k].title}</span><div class="btn-group"><button class="edit-btn" onclick="startEdit('banners','${k}')">ပြင်</button><button class="del-btn" onclick="deleteItem('banners/${k}')">ဖျက်</button></div></div>`; }); 
+        c.innerHTML = html;
+    });
     
+    onValue(ref(db, 'movies'), s => { 
+        const d=s.val(); const c=document.getElementById('adminMovieList'); let html = "";
+        if(d) Object.keys(d).forEach(k => { html += `<div class="item"><span>${d[k].title}</span><div class="btn-group"><button class="edit-btn" onclick="startEdit('movies','${k}','movies')">ပြင်</button><button class="del-btn" onclick="deleteItem('movies/${k}')">ဖျက်</button></div></div>`; }); 
+        c.innerHTML = html;
+    });
     
+    onValue(ref(db, 'animation'), s => { 
+        const d=s.val(); const c=document.getElementById('adminAnimationList'); let html = "";
+        if(d) Object.keys(d).forEach(k => { html += `<div class="item"><span>${d[k].title}</span><div class="btn-group"><button class="edit-btn" onclick="startEdit('movies','${k}','animation')">ပြင်</button><button class="del-btn" onclick="deleteItem('animation/${k}')">ဖျက်</button></div></div>`; }); 
+        c.innerHTML = html;
+    });
     
- 
+    onValue(ref(db, 'adult'), s => { 
+        const d=s.val(); const c=document.getElementById('adminAdultList'); let html = "";
+        if(d) Object.keys(d).forEach(k => { html += `<div class="item"><span>${d[k].title}</span><div class="btn-group"><button class="edit-btn" onclick="startEdit('movies','${k}','adult')">ပြင်</button><button class="del-btn" onclick="deleteItem('adult/${k}')">ဖျက်</button></div></div>`; }); 
+        c.innerHTML = html;
+    });
     
-     <br>  <p style="text-align:center;color:Gray">&copy; IC_TV_Team</p>
-     
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script><script type="text/javascript"> 
-var closedModalHashStateId = "#modalClosed"; var openModalHashStateId = "#modalOpen";window.location.hash = closedModalHashStateId;   
-$('#myModal').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal1').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal1').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal2').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal2').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal3').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal3').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal4').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal4').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal5').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal5').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal6').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal6').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal7').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal7').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal8').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal8').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal9').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal9').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal10').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal10').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal11').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal11').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal12').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal12').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal13').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal13').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal14').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal14').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal15').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal15').on('hide.bs.modal', function(e) { window.history.back(); }); 
-$('#myModal16').on('show.bs.modal', function(e) { window.location.hash = openModalHashStateId; });$('#myModal16').on('hide.bs.modal', function(e) { window.history.back(); }); 
- 
+    onValue(ref(db, 'series'), s => { 
+        const d=s.val(); const c=document.getElementById('adminSeriesList'); const sel=document.getElementById('sExistingSelect');
+        let htmlList = "", htmlOptions = "";
+        if(d) Object.keys(d).forEach(k => { 
+            htmlList += `<div class="item"><span>${d[k].title}</span><div class="btn-group"><button class="edit-btn" onclick="startEdit('series','${k}')">ပြင်</button><button class="del-btn" onclick="deleteItem('series/${k}')">ဖျက်</button></div></div>`; 
+            htmlOptions += `<option value="${k}">${d[k].title}</option>`;
+        }); 
+        c.innerHTML = htmlList;
+        sel.innerHTML = htmlOptions === "" ? "<option value=''>စီးရီးမရှိသေးပါ</option>" : htmlOptions;
+    });
+
+    onValue(ref(db, 'football'), s => { 
+        const d=s.val(); const c=document.getElementById('adminFootballList'); const sel=document.getElementById('fExistingSelect');
+        let htmlList = "", htmlOptions = "";
+        if(d) Object.keys(d).forEach(k => { 
+            htmlList += `<div class="item"><span>${d[k].teams}</span><div class="btn-group"><button class="edit-btn" onclick="startEdit('football','${k}')">ပြင်</button><button class="del-btn" onclick="deleteItem('football/${k}')">ဖျက်</button></div></div>`; 
+            htmlOptions += `<option value="${k}">${d[k].teams} (${d[k].status})</option>`;
+        }); 
+        c.innerHTML = htmlList;
+        sel.innerHTML = htmlOptions === "" ? "<option value=''>ပွဲစဉ်မရှိသေးပါ</option>" : htmlOptions;
+    });
+
+    onValue(ref(db, 'highlights'), (s) => { 
+        const d=s.val(); const c=document.getElementById('adminHighlightList'); let html = "";
+        if(d) Object.keys(d).forEach(k => { html += `<div class="item"><span>${d[k].title}</span><div class="btn-group"><button class="del-btn" onclick="deleteItem('highlights/${k}')">ဖျက်</button></div></div>`; }); 
+        c.innerHTML = html;
+    });
+
+    window.deleteItem = (path) => { 
+        // Added Password Control for Deleting Movies, Animations, Adult Content, and Series
+        if (path.startsWith('movies/') || path.startsWith('animation/') || path.startsWith('adult/') || path.startsWith('series/')) {
+            if (!checkAdminPassword()) return;
+        }
+        if(confirm("ဖျက်ရန် သေချာပါသလား?")) remove(ref(db, path)); 
+    }
 </script>
 </body>
-  </html>
+</html>
