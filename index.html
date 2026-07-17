@@ -6,6 +6,10 @@
     <title>IC_TV Admin Panel</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SweetAlert2 Library ထည့်သွင်းခြင်း -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         :root { --admin-color: #6200ea; --primary-color: #e50914; --bg-color: #111; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
@@ -73,6 +77,7 @@
 
     <div class="scrollable-content">
         <div id="view-dashboard" class="view-section active">
+            <!-- Content Upload Boxes -->
             <div class="admin-box banner-box">
                 <div class="box-title" style="color:#ff00ff;"><i class="fa-solid fa-images"></i> ၁။ Banner Slider ပုံတင်ရန်</div>
                 <input type="text" id="bTitle" placeholder="Banner ခေါင်းစဉ် (Title)">
@@ -167,6 +172,7 @@
                 <button class="sub-btn" style="background:#f1c40f; color:#000;" onclick="uploadHighlight()">Highlight တင်မည်</button>
             </div>
 
+            <!-- Manage Sections -->
             <div class="manage-section"><div class="manage-title">Banners စီမံရန်</div><div class="item-list" id="adminBannerList"></div></div>
             <div class="manage-section"><div class="manage-title">Movies စီမံရန်</div><div class="item-list" id="adminMovieList"></div></div>
             <div class="manage-section"><div class="manage-title">Animation စီမံရန်</div><div class="item-list" id="adminAnimationList"></div></div>
@@ -217,17 +223,40 @@
 
     let allUsersData = {}; 
 
-    // --- Password Verification Helper Function ---
-    function checkAdminPassword() {
+    // --- Custom Alert Helper using SweetAlert ---
+    window.showAlert = function(msg, isSuccess = false) {
+        Swal.fire({
+            icon: isSuccess ? 'success' : 'error',
+            title: isSuccess ? 'အောင်မြင်ပါသည်' : 'သတိပြုရန်',
+            text: msg,
+            background: '#1a1b26', // Dark background like Image 2
+            color: '#ffffff',
+            confirmButtonColor: '#00e676', // Green OK button
+            confirmButtonText: 'OK'
+        });
+    };
+
+    // --- Password Verification (Async with SweetAlert) ---
+    async function checkAdminPassword() {
         if (sessionStorage.getItem("admin_authenticated") === "true") {
             return true;
         }
-        let pwd = prompt("လုပ်ဆောင်ချက်ကို အတည်ပြုရန် စကားဝှက်ထည့်ပါ:");
+        const { value: pwd } = await Swal.fire({
+            title: 'စကားဝှက်လိုအပ်ပါသည်',
+            input: 'password',
+            inputPlaceholder: 'လုပ်ဆောင်ချက်ကို အတည်ပြုရန် စကားဝှက်ထည့်ပါ',
+            showCancelButton: true,
+            background: '#1a1b26',
+            color: '#fff',
+            confirmButtonColor: '#00e676',
+            cancelButtonColor: '#d33'
+        });
+
         if (pwd === "29581") {
             sessionStorage.setItem("admin_authenticated", "true");
             return true;
-        } else if (pwd !== null) {
-            alert("စကားဝှက် မှားယွင်းနေပါသည်။");
+        } else if (pwd !== undefined && pwd !== "") {
+            showAlert("စကားဝှက် မှားယွင်းနေပါသည်။");
         }
         return false;
     }
@@ -299,26 +328,34 @@
         total.innerText = count;
     });
 
-    window.toggleBlock = function(uKey, status) {
+    window.toggleBlock = async function(uKey, status) {
         const newStatus = status === 'active' ? 'blocked' : 'active';
-        if(confirm(`ဒီအကောင့်ကို ${newStatus} လုပ်မှာ သေချာပါသလား?`)) {
-            let pwd = prompt("လုပ်ဆောင်ချက်ကို အတည်ပြုရန် စကားဝှက်ထည့်ပါ:");
-            if (pwd === "29581") {
+        const result = await Swal.fire({
+            title: 'သေချာပါသလား?',
+            text: `ဒီအကောင့်ကို ${newStatus} လုပ်မည်!`,
+            icon: 'warning', showCancelButton: true, background: '#1a1b26', color: '#fff', confirmButtonColor: '#00e676'
+        });
+        
+        if (result.isConfirmed) {
+            if (await checkAdminPassword()) {
                 update(ref(db, `users/${uKey}`), { status: newStatus });
-            } else if (pwd !== null) {
-                alert("စကားဝှက် မှားယွင်းနေပါသည်။");
+                showAlert("ပြင်ဆင်ပြီးပါပြီ", true);
             }
         }
     };
 
-    window.deleteUserAccount = function(uKey) {
-        if(confirm(`ဒီအကောင့်ကို အပြီးအပိုင်ဖျက်မှာ သေချာပါသလား? (ဖျက်ပြီးပါက ပြန်ယူ၍မရပါ)`)) { 
-            let pwd = prompt("လုပ်ဆောင်ချက်ကို အတည်ပြုရန် စကားဝှက်ထည့်ပါ:");
-            if (pwd === "29581") {
+    window.deleteUserAccount = async function(uKey) {
+        const result = await Swal.fire({
+            title: 'အပြီးဖျက်မည်',
+            text: "ဖျက်ပြီးပါက ပြန်လည်ရယူ၍ မရနိုင်ပါ!",
+            icon: 'warning', showCancelButton: true, background: '#1a1b26', color: '#fff', confirmButtonColor: '#e50914'
+        });
+        
+        if (result.isConfirmed) { 
+            if (await checkAdminPassword()) {
                 remove(ref(db, `users/${uKey}`)); 
                 remove(ref(db, `online_users/${uKey}`)); 
-            } else if (pwd !== null) {
-                alert("စကားဝှက် မှားယွင်းနေပါသည်။");
+                showAlert("အကောင့်ကို ဖျက်လိုက်ပါပြီ", true);
             }
         }
     };
@@ -383,14 +420,25 @@
     window.uploadBanner = function() {
         const title = document.getElementById('bTitle').value.trim();
         const image = document.getElementById('bImage').value.trim();
-        if(!image) return alert("ဓာတ်ပုံလင့်ခ် မဖြစ်မနေထည့်ပါ!");
+        if(!image) return showAlert("ဓာတ်ပုံလင့်ခ် မဖြစ်မနေထည့်ပါ!");
+        
         const data = { title, image };
-        if(currentKeys.banners) { update(ref(db, 'banners/' + currentKeys.banners), data).then(() => { alert("ပြင်ဆင်ပြီးပါပြီ!"); resetButton('banners', 'Banner တင်မည်'); document.getElementById('bTitle').value=""; document.getElementById('bImage').value=""; }); } 
-        else { push(ref(db, 'banners'), data).then(() => { alert("တင်ပြီးပါပြီ!"); document.getElementById('bTitle').value=""; document.getElementById('bImage').value=""; }); }
+        if(currentKeys.banners) { 
+            update(ref(db, 'banners/' + currentKeys.banners), data).then(() => { 
+                showAlert("ပြင်ဆင်ပြီးပါပြီ!", true); 
+                resetButton('banners', 'Banner တင်မည်'); 
+                document.getElementById('bTitle').value=""; document.getElementById('bImage').value=""; 
+            }); 
+        } else { 
+            push(ref(db, 'banners'), data).then(() => { 
+                showAlert("တင်ပြီးပါပြီ!", true); 
+                document.getElementById('bTitle').value=""; document.getElementById('bImage').value=""; 
+            }); 
+        }
     }
 
-    window.uploadMovie = function() {
-        if (!checkAdminPassword()) return; // Added Password Control
+    window.uploadMovie = async function() {
+        if (!(await checkAdminPassword())) return; 
         
         const category = document.getElementById('mCategory').value;
         const title = document.getElementById('mTitle').value.trim();
@@ -398,26 +446,27 @@
         const rating = document.getElementById('mRating').value.trim();
         const image = document.getElementById('mImage').value.trim();
         const stream = document.getElementById('mStream').value.trim();
-        if(!title || !image || !stream) return alert("အချက်အလက်အားလုံး ဖြည့်စွက်ပါ!");
+        
+        if(!title || !image || !stream) return showAlert("အချက်အလက်အားလုံး ဖြည့်စွက်ပါ!");
         
         const data = { title, image, stream, year, rating };
         
         if(currentKeys.movies) {
             update(ref(db, `${currentMovieEditingNode || category}/${currentKeys.movies}`), data).then(() => { 
-                alert("ပြင်ဆင်ပြီးပါပြီ!"); 
+                showAlert("ပြင်ဆင်ပြီးပါပြီ!", true); 
                 resetButton('movies', 'ဗီဒီယိုတင်မည်'); 
                 document.getElementById('mTitle').value=""; document.getElementById('mImage').value=""; document.getElementById('mStream').value=""; 
             });
         } else { 
             push(ref(db, category), data).then(() => { 
-                alert("အသစ်တင်ပြီးပါပြီ!"); 
+                showAlert("အသစ်တင်ပြီးပါပြီ!", true); 
                 document.getElementById('mTitle').value=""; document.getElementById('mYear').value=""; document.getElementById('mRating').value=""; document.getElementById('mImage').value=""; document.getElementById('mStream').value=""; 
             }); 
         }
     }
 
-    window.uploadSeries = function() {
-        if (!checkAdminPassword()) return; // Added Password Control
+    window.uploadSeries = async function() {
+        if (!(await checkAdminPassword())) return; 
 
         if(currentKeys.series) { 
             const title = document.getElementById('sTitle').value.trim();
@@ -435,7 +484,7 @@
             }
 
             update(ref(db, 'series/' + currentKeys.series), { title, year, rating, image, episodes: episodesObj }).then(() => { 
-                alert("စီးရီးအချက်အလက် နှင့် အပိုင်းအားလုံးကို ပြင်ဆင်ပြီးပါပြီ!"); 
+                showAlert("စီးရီးအချက်အလက် နှင့် အပိုင်းအားလုံးကို ပြင်ဆင်ပြီးပါပြီ!", true); 
                 resetButton('series', 'စီးရီး / အပိုင်းသစ် တင်မည်'); 
                 document.getElementById('sTitle').value = ""; document.getElementById('sImage').value = ""; document.getElementById('sEpisodesEdit').value = "";
             });
@@ -448,12 +497,12 @@
         
         if (actionType === 'existing') {
             const seriesId = document.getElementById('sExistingSelect').value;
-            if(!seriesId) return alert("ကျေးဇူးပြု၍ စီးရီးတစ်ခုခုကို ရွေးချယ်ပါ!");
-            if(!epName || !epLink) return alert("အပိုင်းအမည်နှင့် လင့်ခ် ထည့်သွင်းပေးပါ!");
+            if(!seriesId) return showAlert("ကျေးဇူးပြု၍ စီးရီးတစ်ခုခုကို ရွေးချယ်ပါ!");
+            if(!epName || !epLink) return showAlert("အပိုင်းအမည်နှင့် လင့်ခ် ထည့်သွင်းပေးပါ!");
             
             const newEpKey = `ep_${Date.now()}`; 
             update(ref(db, `series/${seriesId}/episodes/${newEpKey}`), { name: epName, stream: epLink }).then(() => {
-                alert("အပိုင်းအသစ် အောင်မြင်စွာ ပေါင်းထည့်ပြီးပါပြီ!");
+                showAlert("အပိုင်းအသစ် အောင်မြင်စွာ ပေါင်းထည့်ပြီးပါပြီ!", true);
                 document.getElementById('sEpName').value = ""; document.getElementById('sEpLink').value = "";
             });
             return;
@@ -463,13 +512,13 @@
         const year = document.getElementById('sYear').value.trim();
         const rating = document.getElementById('sRating').value.trim();
         const image = document.getElementById('sImage').value.trim();
-        if(!title || !image) return alert("စီးရီးခေါင်းစဉ်နှင့် ပုံလင့်ခ် ထည့်ပါ!");
+        if(!title || !image) return showAlert("စီးရီးခေါင်းစဉ်နှင့် ပုံလင့်ခ် ထည့်ပါ!");
         
         let episodesObj = {};
         if(epName && epLink) { episodesObj[`ep_${Date.now()}`] = { name: epName, stream: epLink }; }
 
         push(ref(db, 'series'), { title, year, rating, image, episodes: episodesObj }).then(() => { 
-            alert("စီးရီးအသစ် တင်ပြီးပါပြီ!"); 
+            showAlert("စီးရီးအသစ် တင်ပြီးပါပြီ!", true); 
             document.getElementById('sTitle').value = ""; document.getElementById('sYear').value = ""; document.getElementById('sRating').value = ""; document.getElementById('sImage').value = ""; document.getElementById('sEpName').value = ""; document.getElementById('sEpLink').value = "";
         }); 
     }
@@ -482,12 +531,12 @@
 
         if (actionType === 'existing') {
             const matchId = document.getElementById('fExistingSelect').value;
-            if(!matchId) return alert("ကျေးဇူးပြု၍ ပွဲစဉ်တစ်ခုခုကို ရွေးချယ်ပါ!");
-            if(!svName || !svLink) return alert("Server အမည်နှင့် လင့်ခ် ထည့်သွင်းပေးပါ!");
+            if(!matchId) return showAlert("ကျေးဇူးပြု၍ ပွဲစဉ်တစ်ခုခုကို ရွေးချယ်ပါ!");
+            if(!svName || !svLink) return showAlert("Server အမည်နှင့် လင့်ခ် ထည့်သွင်းပေးပါ!");
             
             const newSvKey = `sv_${Date.now()}`; 
             update(ref(db, `football/${matchId}/servers/${newSvKey}`), { name: svName, stream: svLink }).then(() => {
-                alert("Server အသစ် အောင်မြင်စွာ ပေါင်းထည့်ပြီးပါပြီ!");
+                showAlert("Server အသစ် အောင်မြင်စွာ ပေါင်းထည့်ပြီးပါပြီ!", true);
                 document.getElementById('fServerName').value = ""; document.getElementById('fServerLink').value = "";
             });
             return;
@@ -510,7 +559,7 @@
             }
 
             update(ref(db, 'football/' + currentKeys.football), { teams: teams, date: fDate, time: time, image: image, status: status, servers: serversObj }).then(() => { 
-                alert("ပွဲစဉ်အချက်အလက် နှင့် ဆာဗာအားလုံးကို ပြင်ဆင်ပြီးပါပြီ!"); 
+                showAlert("ပွဲစဉ်အချက်အလက် နှင့် ဆာဗာအားလုံးကို ပြင်ဆင်ပြီးပါပြီ!", true); 
                 resetButton('football', 'ဘောလုံးပွဲ / Server အသစ် တင်မည်'); 
                 document.getElementById('fTeams').value = ""; document.getElementById('fDate').value = ""; document.getElementById('fTime').value = ""; document.getElementById('fImage').value = ""; document.getElementById('fServersEdit').value = "";
             });
@@ -522,13 +571,13 @@
         const time = document.getElementById('fTime').value.trim();
         const image = document.getElementById('fImage').value.trim();
         const status = document.getElementById('fStatus').value;
-        if(!teams || !time || !image) return alert("ပွဲစဉ်အချက်အလက်များ အပြည့်အစုံထည့်ပါ!");
+        if(!teams || !time || !image) return showAlert("ပွဲစဉ်အချက်အလက်များ အပြည့်အစုံထည့်ပါ!");
 
         let serversObj = {};
         if(svName && svLink) { serversObj[`sv_${Date.now()}`] = { name: svName, stream: svLink }; }
 
         push(ref(db, 'football'), { teams, date: fDate, time, image, status, servers: serversObj }).then(() => { 
-            alert("ပွဲစဉ်အသစ် တင်ပြီးပါပြီ!"); 
+            showAlert("ပွဲစဉ်အသစ် တင်ပြီးပါပြီ!", true); 
             document.getElementById('fTeams').value = ""; document.getElementById('fDate').value = ""; document.getElementById('fTime').value = ""; document.getElementById('fImage').value = ""; document.getElementById('fServerName').value = ""; document.getElementById('fServerLink').value = "";
         }); 
     }
@@ -538,15 +587,15 @@
         const league = document.getElementById('hlLeague').value.trim();
         const stream = document.getElementById('hlStream').value.trim();
         const image = document.getElementById('hlImage').value.trim();
-        if(!title || !stream) return alert("အချက်အလက်ဖြည့်ပါ");
+        if(!title || !stream) return showAlert("အချက်အလက်ဖြည့်ပါ");
         push(ref(db, 'highlights'), { title, league, stream, image, date: new Date().toLocaleDateString() }).then(() => {
-            alert("တင်ပြီးပါပြီ"); document.getElementById('hlTitle').value = ""; document.getElementById('hlStream').value = "";
+            showAlert("တင်ပြီးပါပြီ", true); document.getElementById('hlTitle').value = ""; document.getElementById('hlStream').value = "";
         });
     }
 
     window.startEdit = async function(type, key, optionalSubNode = null) {
         if (type === 'movies' || type === 'series') {
-            if (!checkAdminPassword()) return; // Added Password Control for Editing
+            if (!(await checkAdminPassword())) return; 
         }
 
         const dbPath = optionalSubNode ? `${optionalSubNode}/${key}` : `${type}/${key}`;
@@ -632,6 +681,10 @@
     
     onValue(ref(db, 'series'), s => { 
         const d=s.val(); const c=document.getElementById('adminSeriesList'); const sel=document.getElementById('sExistingSelect');
+        
+        // Save current selection
+        const currentSeriesId = sel.value;
+
         let htmlList = "", htmlOptions = "";
         if(d) Object.keys(d).forEach(k => { 
             htmlList += `<div class="item"><span>${d[k].title}</span><div class="btn-group"><button class="edit-btn" onclick="startEdit('series','${k}')">ပြင်</button><button class="del-btn" onclick="deleteItem('series/${k}')">ဖျက်</button></div></div>`; 
@@ -639,10 +692,19 @@
         }); 
         c.innerHTML = htmlList;
         sel.innerHTML = htmlOptions === "" ? "<option value=''>စီးရီးမရှိသေးပါ</option>" : htmlOptions;
+
+        // Restore selection
+        if (currentSeriesId && d && d[currentSeriesId]) {
+            sel.value = currentSeriesId;
+        }
     });
 
     onValue(ref(db, 'football'), s => { 
         const d=s.val(); const c=document.getElementById('adminFootballList'); const sel=document.getElementById('fExistingSelect');
+        
+        // Save current selection
+        const currentMatchId = sel.value; 
+
         let htmlList = "", htmlOptions = "";
         if(d) Object.keys(d).forEach(k => { 
             htmlList += `<div class="item"><span>${d[k].teams}</span><div class="btn-group"><button class="edit-btn" onclick="startEdit('football','${k}')">ပြင်</button><button class="del-btn" onclick="deleteItem('football/${k}')">ဖျက်</button></div></div>`; 
@@ -650,6 +712,11 @@
         }); 
         c.innerHTML = htmlList;
         sel.innerHTML = htmlOptions === "" ? "<option value=''>ပွဲစဉ်မရှိသေးပါ</option>" : htmlOptions;
+
+        // Restore selection
+        if (currentMatchId && d && d[currentMatchId]) {
+            sel.value = currentMatchId;
+        }
     });
 
     onValue(ref(db, 'highlights'), (s) => { 
@@ -658,13 +725,29 @@
         c.innerHTML = html;
     });
 
-    window.deleteItem = (path) => { 
-        // Added Password Control for Deleting Movies, Animations, Adult Content, and Series
+    window.deleteItem = async (path) => { 
         if (path.startsWith('movies/') || path.startsWith('animation/') || path.startsWith('adult/') || path.startsWith('series/')) {
-            if (!checkAdminPassword()) return;
+            if (!(await checkAdminPassword())) return;
         }
-        if(confirm("ဖျက်ရန် သေချာပါသလား?")) remove(ref(db, path)); 
+
+        const result = await Swal.fire({
+            title: 'သေချာပါသလား?',
+            text: "ဖျက်ပြီးပါက ပြန်လည်ရယူ၍ မရနိုင်ပါ!",
+            icon: 'warning',
+            showCancelButton: true,
+            background: '#1a1b26',
+            color: '#fff',
+            confirmButtonColor: '#e50914',
+            cancelButtonColor: '#475569',
+            confirmButtonText: 'ဖျက်မည်',
+            cancelButtonText: 'မဖျက်ပါ'
+        });
+
+        if(result.isConfirmed) {
+            remove(ref(db, path));
+            showAlert("ဖျက်ပြီးပါပြီ", true);
+        }
     }
 </script>
 </body>
-</html>
+    </html>
